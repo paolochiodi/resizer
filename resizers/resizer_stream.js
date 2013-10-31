@@ -42,7 +42,9 @@ ResizerStream.prototype.setup = function() {
 
   var cover = this;
   this.outStream.on('readable', function(data){
-    cover.push(cover.outStream.read());
+    while (null !== (chunk = cover.outStream.read())) {
+      cover.push(chunk);
+    }
   });
 
   this.outStream.once('end', function() {
