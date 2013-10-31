@@ -1,5 +1,5 @@
 module.exports = {
-  cover: require('./resizers/cover'),
-  contain: require('./resizers/contain'),
-  crop: require('./resizers/crop')
+  cover: require('./lib/resizers/cover'),
+  contain: require('./lib/resizers/contain'),
+  crop: require('./lib/resizers/crop')
 };

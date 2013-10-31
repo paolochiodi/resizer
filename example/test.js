@@ -1,5 +1,5 @@
 var fs = require('fs');
-var resizers = require('./index');
+var resizers = require('../index');
 var Cover = resizers.cover;
 var Contain = resizers.contain;
 

@@ -1,0 +1,24 @@
+{
+  "name": "resizer",
+  "version": "0.0.0",
+  "description": "Simple image resizer and thumbnail generator as a stream",
+  "main": "index.js",
+  "scripts": {
+    "test": ""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/paolochiodi/resizer.git"
+  },
+  "keywords": [
+    "resize",
+    "images",
+    "graphicsmagick",
+    "imagemagick"
+  ],
+  "author": "Paolo Chiodi <chiodi84@gmail.com>",
+  "license": "BSD-2-Clause",
+  "bugs": {
+    "url": "https://github.com/paolochiodi/resizer/issues"
+  }
+}
