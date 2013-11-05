@@ -20,5 +20,13 @@
   "license": "BSD-2-Clause",
   "bugs": {
     "url": "https://github.com/paolochiodi/resizer/issues"
+  },
+  "dependencies": {
+    "bytechunker": "~1.0.1"
+  },
+  "devDependencies": {
+    "mocha": "~ 1.10.0",
+    "chai": "~ 1.6.0",
+    "jshint": "~1.1.0"
   }
 }
