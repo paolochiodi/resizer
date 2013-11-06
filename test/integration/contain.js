@@ -12,7 +12,7 @@ describe("Contain", function() {
     var resizer = new Contain({ height: 100, width: 200 });
     var stream = input.pipe(resizer);
 
-    gm(stream).identify('%h %w %[EXIF:*]', function(err, data) {
+    gm(stream).identify('%w %h %[EXIF:*]', function(err, data) {
       expect(data.trim()).to.be.equal('100 100');
       end();
     });
@@ -22,7 +22,7 @@ describe("Contain", function() {
     var resizer = new Contain({ height: 100 });
     var stream = input.pipe(resizer);
 
-    gm(stream).identify('%h %w %[EXIF:*]', function(err, data) {
+    gm(stream).identify('%w %h %[EXIF:*]', function(err, data) {
       expect(data.trim()).to.be.equal('100 100');
       end();
     });
@@ -32,7 +32,7 @@ describe("Contain", function() {
     var resizer = new Contain({ width: 200 });
     var stream = input.pipe(resizer);
 
-    gm(stream).identify('%h %w %[EXIF:*]', function(err, data) {
+    gm(stream).identify('%w %h %[EXIF:*]', function(err, data) {
       expect(data.trim()).to.be.equal('200 200');
       end();
     });
