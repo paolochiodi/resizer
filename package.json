@@ -27,6 +27,7 @@
   "devDependencies": {
     "mocha": "~ 1.10.0",
     "chai": "~ 1.6.0",
-    "jshint": "~1.1.0"
+    "jshint": "~1.1.0",
+    "gm": "~1.13.0"
   }
 }
