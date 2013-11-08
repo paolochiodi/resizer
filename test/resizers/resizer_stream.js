@@ -3,7 +3,6 @@ var Stream = require('stream');
 
 
 function fakeConvertAndEmit(eventName) {
-  var process = require('child_process');
   var EventEmitter = require('events').EventEmitter;
   var convert = new EventEmitter();
 
@@ -28,13 +27,15 @@ describe("ResizerStream", function() {
   });
 
   it("should emit an error if graphics magick exits with code != 0", function(end) {
+    var process = require('child_process');
     var resizer = new Cover({ height: 100, width: 200 });
 
-    sinon.stub(resizer, '_spawn', function() {
+    sinon.stub(process, 'spawn', function() {
       return fakeConvertAndEmit('exit');
     });
 
     resizer.on('error', function() {
+      process.spawn.restore();
       end();
     });
 
@@ -42,13 +43,15 @@ describe("ResizerStream", function() {
   });
 
   it("should emit an error if graphics magick emits error", function(end) {
+    var process = require('child_process');
     var resizer = new Cover({ height: 100, width: 200 });
 
-    sinon.stub(resizer, '_spawn', function() {
+    sinon.stub(process, 'spawn', function() {
       return fakeConvertAndEmit('error');
     });
 
     resizer.on('error', function() {
+      process.spawn.restore();
       end();
     });
 
