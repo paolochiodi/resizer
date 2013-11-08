@@ -4,6 +4,9 @@ test:
 bail:
 	./node_modules/.bin/mocha --recursive test --bail --reporter spec
 
+leak:
+	./node_modules/.bin/mocha --check-leaks --recursive test
+
 ci:
 	./node_modules/.bin/mocha --recursive --watch test
 
