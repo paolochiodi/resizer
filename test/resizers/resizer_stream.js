@@ -20,6 +20,23 @@ function fakeConvertAndEmit(eventName, eventMessage) {
   return convert;
 }
 
+function fakeInfiniteConvert() {
+  var EventEmitter = require('events').EventEmitter;
+  var convert = new EventEmitter();
+
+  convert.stdin = new Stream.PassThrough();
+  convert.stdout = convert.stdin;
+  convert.stderr = new Stream.PassThrough();
+
+
+  convert.kill = function(signal) {
+    expect(signal).to.be.equal('SIGKILL');
+    convert.emit('exit', 9);
+  };
+
+  return convert;
+}
+
 describe("ResizerStream", function() {
 
   afterEach(function() {
@@ -99,6 +116,22 @@ describe("ResizerStream", function() {
       expect(spy.calledWith('Resizer completed with message:\nstderr data')).to.be.equal(true);
       end();
     });
+  });
+
+  it("should timeout gm execution", function(end) {
+    var resizer = new Cover({ height: 100, width: 200, timeout: 2 });
+
+    sinon.stub(process, 'spawn', function() {
+      return fakeInfiniteConvert();
+    });
+
+    resizer.write('some data');
+
+    resizer.on('error', function(message) {
+      expect(message).to.be.equal('GM process exited with code 9\nstderr:\n');
+      end();
+    });
+
   });
 
 });
