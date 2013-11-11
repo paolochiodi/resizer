@@ -2,7 +2,6 @@ var Cover = require('../../lib/resizers/resizer_stream');
 var Stream = require('stream');
 var process = require('child_process');
 
-
 function fakeConvertAndEmit(eventName, eventMessage) {
   var EventEmitter = require('events').EventEmitter;
   var convert = new EventEmitter();
@@ -10,6 +9,7 @@ function fakeConvertAndEmit(eventName, eventMessage) {
   convert.stdin = new Stream.Transform();
   convert.stdout = convert.stdin;
   convert.stderr = new Stream.PassThrough();
+
 
   convert.stdin._transform = function(chunk, encoding, cb) {
     this.push(chunk);
@@ -63,6 +63,42 @@ describe("ResizerStream", function() {
     });
 
     resizer.write('data');
+  });
+
+  it("should log resize parameters", function(end) {
+    var spy = sinon.spy();
+    var resizer = new Cover({ height: 100, width: 200, debug: spy });
+
+    sinon.stub(process, 'spawn', function() {
+      return fakeConvertAndEmit('exit', 0);
+    });
+
+    resizer.write('some data');
+
+    resizer.on('exit', function() {
+      expect(spy.called).to.be.equal(true);
+      end();
+    });
+  });
+
+  it("should log stderr output on exit", function(end) {
+    var spy = sinon.spy();
+    var resizer = new Cover({ height: 100, width: 200, debug: spy });
+
+    sinon.stub(process, 'spawn', function() {
+      var convert = fakeConvertAndEmit('exit', 0);
+      convert.stderr.write('stderr data');
+
+      return convert;
+    });
+
+
+    resizer.write('some data');
+
+    resizer.on('exit', function() {
+      expect(spy.calledWith('Resizer completed with message:\nstderr data')).to.be.equal(true);
+      end();
+    });
   });
 
 });

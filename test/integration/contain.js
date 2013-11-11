@@ -3,7 +3,6 @@ var gm = require('gm');
 var Contain = require('../../lib/resizers/contain');
 
 describe("Contain", function() {
-
   beforeEach(function() {
     input = fs.createReadStream(__dirname + '/test.jpg');
   });
