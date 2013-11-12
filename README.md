@@ -72,15 +72,15 @@ resizer.crop({height: 200, width:300});
 
 You can pass other options along with heigh and width:
 
-`debug`: a function called to print debug infos (defaults to empty function)
-`convertTo`: an image format to convert to. should be one supported by graphics magick (example: jpg)
+- `debug`: a function called to print debug infos (defaults to empty function)
+- `convertTo`: an image format to convert to. should be one supported by graphics magick (example: jpg)
 
 ### Output images
 
 Resizer will do some additional changes to the output images:
-`auto-orient`: automatically orient the image data and discard orientation exif data
-`strip`: strip all metadata
-`quality`: set graphics magick quality to 91
+- `auto-orient`: automatically orient the image data and discard orientation exif data
+- `strip`: strip all metadata
+- `quality`: set graphics magick quality to 91
 
 This will be optional sometime in the future. If you really need them please open a feature request or, even better, submit a pull-request.
 
