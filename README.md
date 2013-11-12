@@ -1,7 +1,7 @@
 Resizer
 =====
 
-Resize is a thumbnail generator and image resizer for node with a transform stream interface.
+Resizer is a thumbnail generator and image resizer for node with a transform stream interface.
 Its goal is to be simple and fast.
 Current implementation is based on GraphicsMagick.
 
@@ -31,9 +31,59 @@ var resizer = require('resizer')
   , inputImage = fs.createReadStream(__dirname + '/input.jpg')
   , outputImage = fs.createWriteStream(__dirname + '/output.jpg');
 
-inputImage.pipe(resizer.contain({height: 200, width:300})).pipe(outputImage)
+inputImage.pipe(resizer.contain({height: 200, width:300})).pipe(outputImage);
 
 ```
+
+## Thumbnail modes
+
+Resizer can generate three type of thumbnail, modelled after css3 background-size specification: cover, contain, crop
+
+### Contain
+
+Creates an image whose sizes are at max the ones specified. Keeps aspect ratio.
+You also can specify only width or height.
+
+```
+resizer.contain({height: 200, width:300});
+resizer.contain({width:300});
+```
+
+### Cover
+
+Creates an image whose sizes are exactly the ones specified.
+The original image is scaled down to cover entirely the specified area and then the exceding parte of the image are "cut out" to fit the new aspect ratio.
+
+```
+resizer.cover({height: 200, width:300});
+```
+
+### Crop
+
+Creates an image whose sizes are exactly the ones specified.
+The reduced image is obtained picking it from a rectangle of the
+same sizes from the center of the image.
+
+```
+resizer.crop({height: 200, width:300});
+```
+
+### Options
+
+You can pass other options along with heigh and width:
+
+`debug`: a function called to print debug infos (defaults to empty function)
+`convertTo`: an image format to convert to. should be one supported by graphics magick (example: jpg)
+
+### Output images
+
+Resizer will do some additional changes to the output images:
+`auto-orient`: automatically orient the image data and discard orientation exif data
+`strip`: strip all metadata
+`quality`: set graphics magick quality to 91
+
+This will be optional sometime in the future. If you really need them please open a feature request or, even better, submit a pull-request.
+
 
 ## Contributing to Resizer
 
