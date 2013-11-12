@@ -12,7 +12,7 @@ describe("Contain", function() {
     var stream = input.pipe(resizer);
 
     gm(stream).identify('%w %h %[EXIF:*]', function(err, data) {
-      expect(data.trim()).to.be.equal('100 100');
+      expect(data.trim()).to.be.equal('150 100');
       end();
     });
   });
@@ -22,7 +22,7 @@ describe("Contain", function() {
     var stream = input.pipe(resizer);
 
     gm(stream).identify('%w %h %[EXIF:*]', function(err, data) {
-      expect(data.trim()).to.be.equal('100 100');
+      expect(data.trim()).to.be.equal('150 100');
       end();
     });
   });
@@ -32,7 +32,7 @@ describe("Contain", function() {
     var stream = input.pipe(resizer);
 
     gm(stream).identify('%w %h %[EXIF:*]', function(err, data) {
-      expect(data.trim()).to.be.equal('200 200');
+      expect(data.trim()).to.be.equal('200 133');
       end();
     });
   });
