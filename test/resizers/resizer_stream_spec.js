@@ -131,7 +131,11 @@ describe("ResizerStream", function() {
       expect(message).to.be.equal('GM process exited with code 9\nstderr:\n');
       end();
     });
+  });
 
+  it("should convert to other formats", function() {
+    var resizer = new Cover({ height: 100, width: 200, convertTo: 'jpg' });
+    expect(resizer.baseParameters()).to.deep.equal(['-quality', '91', '+profile', '*', '-auto-orient', '-strip', 'jpg:-']);
   });
 
 });
