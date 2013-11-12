@@ -10,7 +10,7 @@ describe("Cover", function() {
 
   it("with both height and width should generate the parameters correctly", function() {
     var resizer = new Cover({ height: 100, width: 200 });
-    expect(resizer.getParameters()).to.deep.equal(['-', '-thumbnail', '200x100>^', '-gravity', 'center', '-extent', '200x100>', '-quality', '91', '+profile', '*', '-auto-orient', '-strip', '-']);
+    expect(resizer.getParameters()).to.deep.equal(['-size', '200x100^', '-', '-thumbnail', '200x100>^', '-gravity', 'center', '-extent', '200x100>', '-quality', '91', '+profile', '*', '-auto-orient', '-strip', '-']);
   });
 
 });
