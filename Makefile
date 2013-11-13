@@ -10,6 +10,9 @@ leak:
 ci:
 	./node_modules/.bin/mocha --recursive --watch test
 
+bench:
+	node benchmark/bench.js
+
 benchme:
 	node benchmark/benchme.js
 

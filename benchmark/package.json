@@ -1,5 +1,5 @@
 {
-  "name": "resizer benchmark",
+  "name": "resizer-benchmark",
   "version": "0.0.0",
   "description": "Simple image resizer and thumbnail generator as a stream",
   "main": "benchme.js",
@@ -16,7 +16,8 @@
     "url": "https://github.com/paolochiodi/resizer/issues"
   },
   "devDependencies": {
+    "benchmark": "~1.0.0",
     "gm": "~1.13.0",
-    "benchmark": "~1.0.0"
+    "imagemagick-native": "~0.2.9"
   }
 }
