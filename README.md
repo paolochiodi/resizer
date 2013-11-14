@@ -109,6 +109,10 @@ We have two benchmark suites:
 * `make benchme` benchmark all types of thumbnails on different images, it is usefull to check performance after changes to the code
 * `make bench` benchmark resizer against other common libraries for image resizing
 
+## Contributors
+
+Special thanks to Matteo Collina ( http://matteocollina.com ) for contributing the original code to handle graphics magick and its quirks.
+
 ## LICENSE - "BSD-2-Clause"
 
 Copyright (c) 2013 Paolo Chiodi
