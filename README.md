@@ -3,7 +3,7 @@ Resizer
 
 Resizer is a thumbnail generator and image resizer for node with a transform stream interface.
 Its goal is to be simple and fast.
-Current implementation is based on GraphicsMagick.
+Current implementation is based on GraphicsMagick and adopt smart tricks to speed up conversione and provide better images so you don't need to know all graphics magick options and internals.
 
 It is based on the Stream 2 API, so it will not work on node v0.8.
 If you want node v0.8, please submit a pull-request.
