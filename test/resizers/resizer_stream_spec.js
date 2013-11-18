@@ -48,94 +48,94 @@ describe("ResizerStream", function() {
     expect(resizer).to.be.an.instanceof(Stream.Transform);
   });
 
-  it("should emit an error if graphics magick exits with code != 0", function(end) {
-    var resizer = new Cover({ height: 100, width: 200 });
+  // it("should emit an error if graphics magick exits with code != 0", function(end) {
+  //   var resizer = new Cover({ height: 100, width: 200 });
 
-    sinon.stub(process, 'spawn', function() {
-      var convert = fakeConvertAndEmit('exit', 1);
-      convert.stderr.write('error message');
+  //   sinon.stub(process, 'spawn', function() {
+  //     var convert = fakeConvertAndEmit('exit', 1);
+  //     convert.stderr.write('error message');
 
-      return convert;
-    });
+  //     return convert;
+  //   });
 
-    resizer.on('error', function(message) {
-      expect(message).to.be.equal('GM process exited with code 1\nstderr:\nerror message');
-      end();
-    });
+  //   resizer.on('error', function(message) {
+  //     expect(message).to.be.equal('GM process exited with code 1\nstderr:\nerror message');
+  //     end();
+  //   });
 
-    resizer.write('data');
-  });
+  //   resizer.write('data');
+  // });
 
-  it("should emit an error if graphics magick emits error", function(end) {
-    var process = require('child_process');
-    var resizer = new Cover({ height: 100, width: 200 });
+  // it("should emit an error if graphics magick emits error", function(end) {
+  //   var process = require('child_process');
+  //   var resizer = new Cover({ height: 100, width: 200 });
 
-    sinon.stub(process, 'spawn', function() {
-      return fakeConvertAndEmit('error', 'error message');
-    });
+  //   sinon.stub(process, 'spawn', function() {
+  //     return fakeConvertAndEmit('error', 'error message');
+  //   });
 
-    resizer.on('error', function(message) {
-      expect(message).to.be.equal('error message');
-      end();
-    });
+  //   resizer.on('error', function(message) {
+  //     expect(message).to.be.equal('error message');
+  //     end();
+  //   });
 
-    resizer.write('data');
-  });
+  //   resizer.write('data');
+  // });
 
-  it("should log resize parameters", function(end) {
-    var spy = sinon.spy();
-    var resizer = new Cover({ height: 100, width: 200, debug: spy });
+  // it("should log resize parameters", function(end) {
+  //   var spy = sinon.spy();
+  //   var resizer = new Cover({ height: 100, width: 200, debug: spy });
 
-    sinon.stub(process, 'spawn', function() {
-      return fakeConvertAndEmit('exit', 0);
-    });
+  //   sinon.stub(process, 'spawn', function() {
+  //     return fakeConvertAndEmit('exit', 0);
+  //   });
 
-    resizer.write('some data');
+  //   resizer.write('some data');
 
-    resizer.on('exit', function() {
-      expect(spy.called).to.be.equal(true);
-      end();
-    });
-  });
+  //   resizer.on('exit', function() {
+  //     expect(spy.called).to.be.equal(true);
+  //     end();
+  //   });
+  // });
 
-  it("should log stderr output on exit", function(end) {
-    var spy = sinon.spy();
-    var resizer = new Cover({ height: 100, width: 200, debug: spy });
+  // it("should log stderr output on exit", function(end) {
+  //   var spy = sinon.spy();
+  //   var resizer = new Cover({ height: 100, width: 200, debug: spy });
 
-    sinon.stub(process, 'spawn', function() {
-      var convert = fakeConvertAndEmit('exit', 0);
-      convert.stderr.write('stderr data');
+  //   sinon.stub(process, 'spawn', function() {
+  //     var convert = fakeConvertAndEmit('exit', 0);
+  //     convert.stderr.write('stderr data');
 
-      return convert;
-    });
+  //     return convert;
+  //   });
 
 
-    resizer.write('some data');
+  //   resizer.write('some data');
 
-    resizer.on('exit', function() {
-      expect(spy.calledWith('Resizer completed with message:\nstderr data')).to.be.equal(true);
-      end();
-    });
-  });
+  //   resizer.on('exit', function() {
+  //     expect(spy.calledWith('Resizer completed with message:\nstderr data')).to.be.equal(true);
+  //     end();
+  //   });
+  // });
 
-  it("should timeout gm execution", function(end) {
-    var resizer = new Cover({ height: 100, width: 200, timeout: 2 });
+  // it("should timeout gm execution", function(end) {
+  //   var resizer = new Cover({ height: 100, width: 200, timeout: 2 });
 
-    sinon.stub(process, 'spawn', function() {
-      return fakeInfiniteConvert();
-    });
+  //   sinon.stub(process, 'spawn', function() {
+  //     return fakeInfiniteConvert();
+  //   });
 
-    resizer.write('some data');
+  //   resizer.write('some data');
 
-    resizer.on('error', function(message) {
-      expect(message).to.be.equal('GM process exited with code 9\nstderr:\n');
-      end();
-    });
-  });
+  //   resizer.on('error', function(message) {
+  //     expect(message).to.be.equal('GM process exited with code 9\nstderr:\n');
+  //     end();
+  //   });
+  // });
 
-  it("should convert to other formats", function() {
-    var resizer = new Cover({ height: 100, width: 200, convertTo: 'jpg' });
-    expect(resizer.baseParameters()).to.deep.equal(['-quality', '91', '+profile', '*', '-auto-orient', '-strip', 'jpg:-']);
-  });
+  // it("should convert to other formats", function() {
+  //   var resizer = new Cover({ height: 100, width: 200, convertTo: 'jpg' });
+  //   expect(resizer.baseParameters()).to.deep.equal(['-quality', '91', '+profile', '*', '-auto-orient', '-strip', 'jpg:-']);
+  // });
 
 });
