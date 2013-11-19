@@ -33,7 +33,7 @@ Handle<Value> Contain(const Arguments& args) {
     size = Magick::Geometry(1024, 768);
 
   Magick::Image image;
-  image.read( srcBlob, size );
+  image.read( srcBlob, size, 8 );
 
   if ( ! width  ) { width  = image.columns(); }
   if ( ! height ) { height = image.rows();    }
@@ -77,7 +77,7 @@ Handle<Value> Cover(const Arguments& args) {
 
 
   Magick::Image image;
-  image.read( srcBlob, size );
+  image.read( srcBlob, size, 8 );
 
   if ( ! width  ) { width  = image.columns(); }
   if ( ! height ) { height = image.rows();    }
@@ -136,7 +136,7 @@ Handle<Value> Crop(const Arguments& args) {
   Magick::Geometry size = Magick::Geometry(1024, 768);
 
   Magick::Image image;
-  image.read( srcBlob, size );
+  image.read( srcBlob, size, 8 );
 
   if ( ! width  ) { width  = image.columns(); }
   if ( ! height ) { height = image.rows();    }
