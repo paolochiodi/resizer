@@ -8,15 +8,14 @@
 
 using namespace v8;
 
-void ApplyBasicOptions(Magick::Image *image) {
+void ApplyBasicOptions ( Magick::Image *image ) {
   image->quality( 91 );
   image->strip();
 }
 
-void ImageThumbnail (Magick::Image *image, const char *geometryString)
-{
+void ImageThumbnail (Magick::Image *image, const char *geometryString) {
   MagickLib::RectangleInfo geometry;
-  MagickLib::GetImageGeometry(image->image(), geometryString, 1, &geometry);
+  MagickLib::GetImageGeometry( image->image(), geometryString, 1, &geometry );
 
   MagickLib::ExceptionInfo exceptionInfo;
   MagickLib::GetExceptionInfo( &exceptionInfo );
