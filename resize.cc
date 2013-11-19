@@ -26,8 +26,14 @@ Handle<Value> Contain(const Arguments& args) {
 
   Magick::Blob srcBlob( node::Buffer::Data(srcData), node::Buffer::Length(srcData) );
 
+  Magick::Geometry size;
+  if (width && height)
+    size = Magick::Geometry(width, height);
+  else
+    size = Magick::Geometry(1024, 768);
+
   Magick::Image image;
-  image.read( srcBlob );
+  image.read( srcBlob, size );
 
   if ( ! width  ) { width  = image.columns(); }
   if ( ! height ) { height = image.rows();    }
@@ -58,13 +64,20 @@ Handle<Value> Cover(const Arguments& args) {
   Local<Object> srcData = Local<Object>::Cast( args[ 0 ] );
   Local<Object> options = Local<Object>::Cast( args[ 1 ] );
 
-  unsigned int width = options->Get( String::NewSymbol("width") )->Uint32Value();;
+  unsigned int width = options->Get( String::NewSymbol("width") )->Uint32Value();
   unsigned int height = options->Get( String::NewSymbol("height") )->Uint32Value();
 
   Magick::Blob srcBlob( node::Buffer::Data(srcData), node::Buffer::Length(srcData) );
 
+  Magick::Geometry size;
+  if (width && height)
+    size = Magick::Geometry(width, height);
+  else
+    size = Magick::Geometry(1024, 768);
+
+
   Magick::Image image;
-  image.read( srcBlob );
+  image.read( srcBlob, size );
 
   if ( ! width  ) { width  = image.columns(); }
   if ( ! height ) { height = image.rows();    }
@@ -120,8 +133,10 @@ Handle<Value> Crop(const Arguments& args) {
 
   Magick::Blob srcBlob( node::Buffer::Data(srcData), node::Buffer::Length(srcData) );
 
+  Magick::Geometry size = Magick::Geometry(1024, 768);
+
   Magick::Image image;
-  image.read( srcBlob );
+  image.read( srcBlob, size );
 
   if ( ! width  ) { width  = image.columns(); }
   if ( ! height ) { height = image.rows();    }
