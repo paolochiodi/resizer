@@ -95,29 +95,32 @@ Handle<Value> Cover(const Arguments& args) {
   double aspectratioOriginal = (double)image.rows() / (double)image.columns();
   unsigned int xoffset = 0;
   unsigned int yoffset = 0;
-  unsigned int resizewidth;
-  unsigned int resizeheight;
+  unsigned int cropWidth;
+  unsigned int cropHeight;
+
   if ( aspectratioExpected > aspectratioOriginal ) {
     // expected is taller
-    resizewidth  = (unsigned int)( (double)height / (double)image.rows() * (double)image.columns() + 1. );
-    resizeheight = height;
-    xoffset      = (unsigned int)( (resizewidth - width) / 2. );
+    cropHeight = image.rows();
+    cropWidth = (unsigned int)((double)cropHeight * aspectratioExpected);
+
+    xoffset      = (unsigned int)( ((double)image.columns() - cropWidth) / 2. );
     yoffset      = 0;
   }
   else {
     // expected is wider
-    resizewidth  = width;
-    resizeheight = (unsigned int)( (double)width / (double)image.columns() * (double)image.rows() + 1. );
+    cropWidth = image.columns();
+    cropHeight = (unsigned int)((double)cropWidth * aspectratioExpected);
+
     xoffset      = 0;
-    yoffset      = (unsigned int)( (resizeheight - height) / 2. );
+    yoffset      = (unsigned int)( ((double)image.rows() - cropHeight) / 2. );
   }
 
-  char geometryString[ 32 ];
-  sprintf( geometryString, "%dx%d>", resizewidth, resizeheight );
-  ImageThumbnail( &image, geometryString );
-
-  Magick::Geometry cropGeometry( width, height, xoffset, yoffset, 0, 0 );
+  Magick::Geometry cropGeometry( cropWidth, cropHeight, xoffset, yoffset, 0, 0 );
   image.crop( cropGeometry );
+
+  char geometryString[ 32 ];
+  sprintf( geometryString, "%dx%d>", width, height );
+  ImageThumbnail( &image, geometryString );
 
   ApplyBasicOptions(&image);
 
