@@ -13,6 +13,18 @@ void ApplyBasicOptions(Magick::Image *image) {
   image->strip();
 }
 
+void ImageThumbnail (Magick::Image *image, const char *geometryString)
+{
+  MagickLib::RectangleInfo geometry;
+  MagickLib::GetImageGeometry(image->image(), geometryString, 1, &geometry);
+
+  MagickLib::ExceptionInfo exceptionInfo;
+  MagickLib::GetExceptionInfo( &exceptionInfo );
+  MagickLib::Image* newImage = MagickLib::ThumbnailImage( image->image(), geometry.width, geometry.height, &exceptionInfo );
+  image->replaceImage( newImage );
+  Magick::throwException( exceptionInfo );
+}
+
 Handle<Value> Contain(const Arguments& args) {
   HandleScope scope;
 
@@ -41,9 +53,7 @@ Handle<Value> Contain(const Arguments& args) {
   char geometryString[ 32 ];
   sprintf( geometryString, "%dx%d>", width, height );
 
-  Magick::Geometry geometry = Magick::Geometry(geometryString);
-
-  image.sample( geometry );
+  ImageThumbnail( &image, geometryString );
 
   ApplyBasicOptions(&image);
 
@@ -103,8 +113,9 @@ Handle<Value> Cover(const Arguments& args) {
     yoffset      = (unsigned int)( (resizeheight - height) / 2. );
   }
 
-  Magick::Geometry resizeGeometry( resizewidth, resizeheight, 0, 0, 0, 0 );
-  image.sample( resizeGeometry );
+  char geometryString[ 32 ];
+  sprintf( geometryString, "%dx%d>", resizewidth, resizeheight );
+  ImageThumbnail( &image, geometryString );
 
   Magick::Geometry cropGeometry( width, height, xoffset, yoffset, 0, 0 );
   image.crop( cropGeometry );
