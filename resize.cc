@@ -44,8 +44,9 @@ Handle<Value> Contain(const Arguments& args) {
 
   Local<Object> srcData = Local<Object>::Cast( args[ 0 ] );
   Local<Object> options = Local<Object>::Cast( args[ 1 ] );
+  Local<Function> cb = Local<Function>::Cast( args[ 2 ] );
 
-  unsigned int width = options->Get( String::NewSymbol("width") )->Uint32Value();;
+  unsigned int width = options->Get( String::NewSymbol("width") )->Uint32Value();
   unsigned int height = options->Get( String::NewSymbol("height") )->Uint32Value();
 
   Magick::Blob srcBlob( node::Buffer::Data(srcData), node::Buffer::Length(srcData) );
@@ -77,7 +78,11 @@ Handle<Value> Contain(const Arguments& args) {
   node::Buffer* retBuffer = node::Buffer::New( dstBlob.length() );
   memcpy( node::Buffer::Data( retBuffer->handle_ ), dstBlob.data(), dstBlob.length() );
 
-  return scope.Close( retBuffer->handle_ );
+  const unsigned argc = 1;
+  Local<Value> argv[argc] = { Local<Value>::New( retBuffer->handle_ ) };
+  cb->Call(Context::GetCurrent()->Global(), argc, argv);
+
+  return scope.Close( Undefined() );
 }
 
 Handle<Value> Cover(const Arguments& args) {
@@ -87,6 +92,7 @@ Handle<Value> Cover(const Arguments& args) {
 
   Local<Object> srcData = Local<Object>::Cast( args[ 0 ] );
   Local<Object> options = Local<Object>::Cast( args[ 1 ] );
+  Local<Function> cb = Local<Function>::Cast( args[ 2 ] );
 
   unsigned int width = options->Get( String::NewSymbol("width") )->Uint32Value();
   unsigned int height = options->Get( String::NewSymbol("height") )->Uint32Value();
@@ -147,7 +153,11 @@ Handle<Value> Cover(const Arguments& args) {
   node::Buffer* retBuffer = node::Buffer::New( dstBlob.length() );
   memcpy( node::Buffer::Data( retBuffer->handle_ ), dstBlob.data(), dstBlob.length() );
 
-  return scope.Close( retBuffer->handle_ );
+  const unsigned argc = 1;
+  Local<Value> argv[argc] = { Local<Value>::New( retBuffer->handle_ ) };
+  cb->Call(Context::GetCurrent()->Global(), argc, argv);
+
+  return scope.Close( Undefined() );
 };
 
 Handle<Value> Crop(const Arguments& args) {
@@ -157,6 +167,7 @@ Handle<Value> Crop(const Arguments& args) {
 
   Local<Object> srcData = Local<Object>::Cast( args[ 0 ] );
   Local<Object> options = Local<Object>::Cast( args[ 1 ] );
+  Local<Function> cb = Local<Function>::Cast( args[ 2 ] );
 
   unsigned int width = options->Get( String::NewSymbol("width") )->Uint32Value();;
   unsigned int height = options->Get( String::NewSymbol("height") )->Uint32Value();
@@ -185,7 +196,11 @@ Handle<Value> Crop(const Arguments& args) {
   node::Buffer* retBuffer = node::Buffer::New( dstBlob.length() );
   memcpy( node::Buffer::Data( retBuffer->handle_ ), dstBlob.data(), dstBlob.length() );
 
-  return scope.Close( retBuffer->handle_ );
+  const unsigned argc = 1;
+  Local<Value> argv[argc] = { Local<Value>::New( retBuffer->handle_ ) };
+  cb->Call(Context::GetCurrent()->Global(), argc, argv);
+
+  return scope.Close( Undefined() );
 };
 
 
