@@ -8,7 +8,20 @@
 
 using namespace v8;
 
-void ApplyBasicOptions ( Magick::Image *image ) {
+void AutoOrient (Magick::Image *image ) {
+  Magick::OrientationType orientation = image->orientation();
+
+  if ( orientation != Magick::UndefinedOrientation && orientation != Magick::TopLeftOrientation ) {
+
+    MagickLib::ExceptionInfo exceptionInfo;
+    MagickLib::GetExceptionInfo( &exceptionInfo );
+    MagickLib::Image *newImage = AutoOrientImage( image->image(), orientation, &exceptionInfo );
+    image->replaceImage( newImage );
+    Magick::throwException( exceptionInfo );
+  }
+}
+
+void ApplyBasicOptions (Magick::Image *image ) {
   image->quality( 91 );
   image->strip();
 }
@@ -19,7 +32,7 @@ void ImageThumbnail (Magick::Image *image, const char *geometryString) {
 
   MagickLib::ExceptionInfo exceptionInfo;
   MagickLib::GetExceptionInfo( &exceptionInfo );
-  MagickLib::Image* newImage = MagickLib::ThumbnailImage( image->image(), geometry.width, geometry.height, &exceptionInfo );
+  MagickLib::Image *newImage = MagickLib::ThumbnailImage( image->image(), geometry.width, geometry.height, &exceptionInfo );
   image->replaceImage( newImage );
   Magick::throwException( exceptionInfo );
 }
@@ -45,6 +58,8 @@ Handle<Value> Contain(const Arguments& args) {
 
   Magick::Image image;
   image.read( srcBlob, size, 8 );
+
+  AutoOrient(&image);
 
   if ( ! width  ) { width  = image.columns(); }
   if ( ! height ) { height = image.rows();    }
@@ -87,6 +102,8 @@ Handle<Value> Cover(const Arguments& args) {
 
   Magick::Image image;
   image.read( srcBlob, size, 8 );
+
+  AutoOrient(&image);
 
   if ( ! width  ) { width  = image.columns(); }
   if ( ! height ) { height = image.rows();    }
@@ -150,6 +167,8 @@ Handle<Value> Crop(const Arguments& args) {
 
   Magick::Image image;
   image.read( srcBlob, size, 8 );
+
+  AutoOrient(&image);
 
   if ( ! width  ) { width  = image.columns(); }
   if ( ! height ) { height = image.rows();    }

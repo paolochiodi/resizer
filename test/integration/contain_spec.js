@@ -35,6 +35,20 @@ describe("Contain", function() {
       expect(data.trim()).to.be.equal('200 133');
       end();
     });
+
   });
+
+  it("should auto orient", function(end) {
+    var resizer = new Contain({ width: 200, height: 100 });
+
+    var input2 = fs.createReadStream(__dirname + '/test_oriented.jpg');
+    var stream = input2.pipe(resizer);
+
+    gm(stream).identify('%w %h %[EXIF:*]', function(err, data) {
+      expect(data.trim()).to.be.equal('67 100');
+      end();
+    });
+  });
+
 
 });

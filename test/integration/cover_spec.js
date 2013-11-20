@@ -18,4 +18,16 @@ describe("Cover", function() {
     });
   });
 
+  it("should auto orient", function(end) {
+    var resizer = new Cover({ width: 200, height: 100 });
+
+    var input2 = fs.createReadStream(__dirname + '/test_oriented.jpg');
+    var stream = input2.pipe(resizer);
+
+    gm(stream).identify('%w %h %[EXIF:*]', function(err, data) {
+      expect(data.trim()).to.be.equal('200 100');
+      end();
+    });
+  });
+
 });
