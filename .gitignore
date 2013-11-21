@@ -14,9 +14,9 @@ results
 npm-debug.log
 node_modules
 
-example/cover.jpg
-example/contain.jpg
-example/contain_single.jpg
-example/crop.jpg
+example/cover*.jpg
+example/contain*.jpg
+example/contain_single*.jpg
+example/crop*.jpg
 
 benchmark/fixtures/output*

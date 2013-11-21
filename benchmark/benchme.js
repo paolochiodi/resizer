@@ -49,7 +49,13 @@ suite.add({
 });
 
 suite.add({
-  name: 'Contain Big Image',
+  name: 'Contain Small',
+  defer: true,
+  fn: buildContain('small.jpg')
+});
+
+suite.add({
+  name: 'Contain Big',
   defer: true,
   fn: buildContain('big.jpg')
 });
@@ -66,6 +72,7 @@ suite.add({
   fn: buildContain('big.png', 'output.png')
 });
 
+
 suite.add({
   name: 'Contain Single',
   defer: true,
@@ -73,7 +80,13 @@ suite.add({
 });
 
 suite.add({
-  name: 'Contain Single Big Image',
+  name: 'Contain Small',
+  defer: true,
+  fn: buildContainSingle('small.jpg')
+});
+
+suite.add({
+  name: 'Contain Single Big',
   defer: true,
   fn: buildContainSingle('big.jpg')
 });
@@ -90,6 +103,7 @@ suite.add({
   fn: buildContainSingle('big.png', 'output.png')
 });
 
+
 suite.add({
   name: 'Cover',
   defer: true,
@@ -97,7 +111,13 @@ suite.add({
 });
 
 suite.add({
-  name: 'Cover Big Image',
+  name: 'Cover Small',
+  defer: true,
+  fn: buildCover('small.jpg')
+});
+
+suite.add({
+  name: 'Cover Big',
   defer: true,
   fn: buildCover('big.jpg')
 });
@@ -114,10 +134,17 @@ suite.add({
   fn: buildCover('big.png', 'output.png')
 });
 
+
 suite.add({
   name: 'Crop',
   defer: true,
   fn: buildCrop('standard.jpg')
+});
+
+suite.add({
+  name: 'Crop Small',
+  defer: true,
+  fn: buildCrop('small.jpg')
 });
 
 suite.add({
