@@ -1,11 +1,11 @@
 var Cover = require('../../lib/resizers/cover');
-var Transform = require('stream').Transform;
+var Duplex = require('stream').Duplex;
 
 describe("Cover", function() {
 
-  it("should be a Transform stream", function() {
+  it("should be a Duplex stream", function() {
     var resizer = new Cover({ height: 100, width: 200 });
-    expect(resizer).to.be.an.instanceof(Transform);
+    expect(resizer).to.be.an.instanceof(Duplex);
   });
 
   it("with both height and width should generate the parameters correctly", function() {

@@ -43,9 +43,9 @@ describe("ResizerStream", function() {
     process.spawn.restore && process.spawn.restore();
   });
 
-  it("should be a Transform stream", function() {
+  it("should be a Duplex stream", function() {
     var resizer = new Cover({ height: 100, width: 200 });
-    expect(resizer).to.be.an.instanceof(Stream.Transform);
+    expect(resizer).to.be.an.instanceof(Stream.Duplex);
   });
 
   it("should emit an error if graphics magick exits with code != 0", function(end) {
@@ -90,12 +90,12 @@ describe("ResizerStream", function() {
       return fakeConvertAndEmit('exit', 0);
     });
 
-    resizer.write('some data');
-
     resizer.on('exit', function() {
       expect(spy.called).to.be.equal(true);
       end();
     });
+
+    resizer.write('some data');
   });
 
   it("should log stderr output on exit", function(end) {
@@ -109,13 +109,12 @@ describe("ResizerStream", function() {
       return convert;
     });
 
-
-    resizer.write('some data');
-
     resizer.on('exit', function() {
       expect(spy.calledWith('Resizer completed with message:\nstderr data')).to.be.equal(true);
       end();
     });
+
+    resizer.write('some data');
   });
 
   it("should timeout gm execution", function(end) {
