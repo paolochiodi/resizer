@@ -1,11 +1,11 @@
 var Crop = require('../../lib/resizers/crop');
-var Transform = require('stream').Transform;
+var Duplex = require('stream').Duplex;
 
 describe("Contain", function() {
 
-  it("should be a Transform stream", function() {
+  it("should be a Duplex stream", function() {
     var resizer = new Crop({ height: 100, width: 200 });
-    expect(resizer).to.be.an.instanceof(Transform);
+    expect(resizer).to.be.an.instanceof(Duplex);
   });
 
   it("with both height and width should generate the parameters correctly", function() {

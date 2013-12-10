@@ -43,14 +43,12 @@ describe("ResizerStream", function() {
     process.spawn.restore && process.spawn.restore();
   });
 
-  it("should be a Transform stream", function() {
+  it("should be a Duplex stream", function() {
     var resizer = new Cover({ height: 100, width: 200 });
-    expect(resizer).to.be.an.instanceof(Stream.Transform);
+    expect(resizer).to.be.an.instanceof(Stream.Duplex);
   });
 
   it("should emit an error if graphics magick exits with code != 0", function(end) {
-    var resizer = new Cover({ height: 100, width: 200 });
-
     sinon.stub(process, 'spawn', function() {
       var convert = fakeConvertAndEmit('exit', 1);
       convert.stderr.write('error message');
@@ -58,8 +56,9 @@ describe("ResizerStream", function() {
       return convert;
     });
 
+    var resizer = new Cover({ height: 100, width: 200 });
     resizer.on('error', function(message) {
-      expect(message).to.be.equal('GM process exited with code 1\nstderr:\nerror message');
+      expect(message).to.be.equal('GM process exited with code 1');
       end();
     });
 
@@ -67,12 +66,11 @@ describe("ResizerStream", function() {
   });
 
   it("should emit an error if graphics magick emits error", function(end) {
-    var process = require('child_process');
-    var resizer = new Cover({ height: 100, width: 200 });
-
     sinon.stub(process, 'spawn', function() {
       return fakeConvertAndEmit('error', 'error message');
     });
+
+    var resizer = new Cover({ height: 100, width: 200 });
 
     resizer.on('error', function(message) {
       expect(message).to.be.equal('error message');
@@ -83,54 +81,33 @@ describe("ResizerStream", function() {
   });
 
   it("should log resize parameters", function(end) {
-    var spy = sinon.spy();
-    var resizer = new Cover({ height: 100, width: 200, debug: spy });
-
     sinon.stub(process, 'spawn', function() {
       return fakeConvertAndEmit('exit', 0);
     });
 
-    resizer.write('some data');
+    var spy = sinon.spy();
+    var resizer = new Cover({ height: 100, width: 200, debug: spy });
 
     resizer.on('exit', function() {
       expect(spy.called).to.be.equal(true);
       end();
     });
-  });
-
-  it("should log stderr output on exit", function(end) {
-    var spy = sinon.spy();
-    var resizer = new Cover({ height: 100, width: 200, debug: spy });
-
-    sinon.stub(process, 'spawn', function() {
-      var convert = fakeConvertAndEmit('exit', 0);
-      convert.stderr.write('stderr data');
-
-      return convert;
-    });
-
 
     resizer.write('some data');
-
-    resizer.on('exit', function() {
-      expect(spy.calledWith('Resizer completed with message:\nstderr data')).to.be.equal(true);
-      end();
-    });
   });
 
   it("should timeout gm execution", function(end) {
-    var resizer = new Cover({ height: 100, width: 200, timeout: 2 });
-
     sinon.stub(process, 'spawn', function() {
       return fakeInfiniteConvert();
     });
 
-    resizer.write('some data');
-
+    var resizer = new Cover({ height: 100, width: 200, timeout: 2 });
     resizer.on('error', function(message) {
-      expect(message).to.be.equal('GM process exited with code 9\nstderr:\n');
+      expect(message).to.be.equal('GM process exited with code 9');
       end();
     });
+
+    resizer.write('some data');
   });
 
   it("should convert to other formats", function() {
