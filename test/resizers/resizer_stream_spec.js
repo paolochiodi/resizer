@@ -2,7 +2,7 @@ var Cover = require('../../lib/resizers/resizer_stream');
 var Stream = require('stream');
 var process = require('child_process');
 
-function fakeConvertAndEmit(eventName, eventMessage) {
+function fakeConvertAndEmit(eventName, eventMessageA, eventMessageB) {
   var EventEmitter = require('events').EventEmitter;
   var convert = new EventEmitter();
 
@@ -13,7 +13,7 @@ function fakeConvertAndEmit(eventName, eventMessage) {
 
   convert.stdin._transform = function(chunk, encoding, cb) {
     this.push(chunk);
-    convert.emit(eventName, eventMessage);
+    convert.emit(eventName, eventMessageA, eventMessageB);
     cb();
   };
 
@@ -59,6 +59,40 @@ describe("ResizerStream", function() {
     var resizer = new Cover({ height: 100, width: 200 });
     resizer.on('error', function(message) {
       expect(message).to.be.equal('GM process exited with code 1');
+      end();
+    });
+
+    resizer.write('data');
+  });
+
+  it("should emit an error if graphics magick exits with code null", function(end) {
+    sinon.stub(process, 'spawn', function() {
+      var convert = fakeConvertAndEmit('exit', null);
+      convert.stderr.write('error message');
+
+      return convert;
+    });
+
+    var resizer = new Cover({ height: 100, width: 200 });
+    resizer.on('error', function(message) {
+      expect(message).to.be.equal('GM process exited without code');
+      end();
+    });
+
+    resizer.write('data');
+  });
+
+  it("should emit an error if graphics magick exits with signal KILL", function(end) {
+    sinon.stub(process, 'spawn', function() {
+      var convert = fakeConvertAndEmit('exit', null, 'KILL');
+      convert.stderr.write('error message');
+
+      return convert;
+    });
+
+    var resizer = new Cover({ height: 100, width: 200 });
+    resizer.on('error', function(message) {
+      expect(message).to.be.equal('GM process exited due to signal KILL');
       end();
     });
 
