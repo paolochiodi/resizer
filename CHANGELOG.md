@@ -1,5 +1,9 @@
 # CHANGELOG
 
+- 0.0.4 Bugfixing
+
+  This should fix the bug caused by toString on gm exit code null. Minory memory usage improvements are expected
+
 - 0.0.3 Move to duplex implementation and bugfixing
 
   This release should reduce memory leaks, handle backpressure better and fix hangup with 0-length images
