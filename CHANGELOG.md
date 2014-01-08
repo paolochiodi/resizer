@@ -1,5 +1,9 @@
 # CHANGELOG
 
+- 0.0.5 Bugfixing
+
+  This should fix the bug caused by recursive nextTick being issue for some images
+
 - 0.0.4 Bugfixing
 
   This should fix the bug caused by toString on gm exit code null. Minory memory usage improvements are expected
