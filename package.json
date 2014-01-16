@@ -31,5 +31,8 @@
     "jshint": "~1.1.0",
     "gm": "~1.13.0"
   },
-  "engines": { "node": ">=0.10.0" }
+  "engines": { "node": ">=0.10.0" },
+  "scripts": {
+    "test": "make test"
+  }
 }
