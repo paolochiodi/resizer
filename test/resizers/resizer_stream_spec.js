@@ -2,6 +2,22 @@ var Cover = require('../../lib/resizers/resizer_stream');
 var Stream = require('stream');
 var process = require('child_process');
 
+
+function fakeConvertAndExitIn(time) {
+  var EventEmitter = require('events').EventEmitter;
+  var convert = new EventEmitter();
+
+  convert.stdin = new Stream.PassThrough();
+  convert.stdout = convert.stdin;
+  convert.stderr = new Stream.PassThrough();
+
+  setTimeout(function() {
+    convert.emit('exit', 0);
+  }, time);
+
+  return convert;
+}
+
 function fakeConvertAndEmit(eventName, eventMessageA, eventMessageB) {
   var EventEmitter = require('events').EventEmitter;
   var convert = new EventEmitter();
@@ -147,6 +163,28 @@ describe("ResizerStream", function() {
   it("should convert to other formats", function() {
     var resizer = new Cover({ height: 100, width: 200, convertTo: 'jpg' });
     expect(resizer.baseParameters()).to.deep.equal(['-quality', '91', '+profile', '*', '-auto-orient', '-strip', 'jpg:-']);
+  });
+
+  it('should log GM execution time', function(end) {
+    clock = sinon.useFakeTimers((new Date()).getTime());
+
+    sinon.stub(process, 'spawn', function() {
+      return fakeConvertAndExitIn(3);
+    });
+
+    var debug = sinon.spy();
+    var resizer = new Cover({ height: 100, width: 200, convertTo: 'jpg', debug: debug });
+
+    resizer.on('exit', function() {
+      expect(debug).to.have.been.called;
+      expect(debug).to.have.been.calledWithMatch(/GM exited in 3 ms/);
+
+      clock.restore();
+      end();
+    });
+
+    resizer.end();
+    clock.tick(3);
   });
 
 });
