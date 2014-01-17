@@ -10,7 +10,7 @@ describe("Contain", function() {
   it("with both height and width should generate the correct image", function(end) {
     var resizer = new Contain({ height: 100, width: 200 });
 
-    resizer.on('error', done);
+    resizer.on('error', end);
 
     var stream = input.pipe(resizer);
 
@@ -23,7 +23,7 @@ describe("Contain", function() {
   it("with only height should generate the correct image", function(end) {
     var resizer = new Contain({ height: 100 });
 
-    resizer.on('error', done);
+    resizer.on('error', end);
 
     var stream = input.pipe(resizer);
 
@@ -36,7 +36,7 @@ describe("Contain", function() {
   it("with only width should generate the correct image", function(end) {
     var resizer = new Contain({ width: 200 });
 
-    resizer.on('error', done);
+    resizer.on('error', end);
 
     var stream = input.pipe(resizer);
 
