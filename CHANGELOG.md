@@ -1,5 +1,9 @@
 # CHANGELOG
 
+- 0.0.6 Option to specify image quality
+
+  Thanks to https://github.com/SteveNewson
+
 - 0.0.5 Bugfixing
 
   This should fix the bug caused by recursive nextTick being issue for some images

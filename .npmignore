@@ -4,3 +4,6 @@ test/
 TODO.md
 Makefile
 tmp
+performance.csv
+test_kill.js
+.DS_Store
