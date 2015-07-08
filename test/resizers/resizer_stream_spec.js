@@ -165,6 +165,16 @@ describe("ResizerStream", function() {
     expect(resizer.baseParameters()).to.deep.equal(['-quality', '91', '+profile', '*', '-auto-orient', '-strip', 'jpg:-']);
   });
 
+  it("should resize with the quality level specified", function() {
+    var resizer = new Cover({ height: 100, width: 200, quality: '99' });
+    expect(resizer.baseParameters()).to.deep.equal(['-quality', '99', '+profile', '*', '-auto-orient', '-strip', '-']);
+  });
+
+  it("should resize with the default quality level if no other is specified", function() {
+    var resizer = new Cover({ height: 100, width: 200 });
+    expect(resizer.baseParameters()).to.deep.equal(['-quality', '91', '+profile', '*', '-auto-orient', '-strip', '-']);
+  });
+
   it('should log GM execution time', function(end) {
     clock = sinon.useFakeTimers((new Date()).getTime());
 
